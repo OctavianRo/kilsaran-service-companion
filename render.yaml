@@ -1,8 +1,8 @@
 services:
   - type: web
-    name: kilsaran-rag
+    name: build
     runtime: docker
-    plan: 0.5c-512mb
+    plan: free
     healthCheckPath: /health
     envVars:
       - key: OPENAI_API_KEY

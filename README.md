@@ -1,4 +1,4 @@
-# Kilsaran Service Companion
+# Build Service Companion
 
 **RAG upgrade:** OpenAI managed vector retrieval and a citation-checked answer backend are prepared. See [RAG_SETUP.md](RAG_SETUP.md) to activate it. The public website is AI-only and shows a setup message until the backend is configured; AI mode sends questions and recent conversation to the backend and OpenAI.
 
