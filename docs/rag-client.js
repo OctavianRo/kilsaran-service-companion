@@ -13,7 +13,7 @@ function createRagEngine(library){
   dialog.querySelector('#rag-connect').onclick=async()=>{
     const error=dialog.querySelector('#rag-error');
     try{const u=new URL(dialog.querySelector('#rag-url').value);if(u.protocol!=='https:'||u.username||u.password||u.search||u.hash)throw Error('Enter a secure HTTPS backend address.');const code=dialog.querySelector('#rag-code').value;if(!code||code.startsWith('sk-'))throw Error('Enter the assistant access code, not an OpenAI key.');
-      const result=await fetch(u.href.replace(/\/$/,'')+'/health',{signal:AbortSignal.timeout(15000)});const health=await result.json();if(!result.ok||!health.ready)throw Error('The backend is not configured yet.');
+      const result=await fetch(u.href.replace(/\/$/,'')+'/health',{signal:AbortSignal.timeout(90000)});const health=await result.json();if(!result.ok||!health.ready)throw Error('The backend is not configured yet.');
       ragURL=u.href.replace(/\/$/,'');ragCode=code;localStorage.setItem('ragApiUrl',ragURL);ragHistory=[];dialog.close();mode();
     }catch(e){error.textContent=e.message;}
   };
