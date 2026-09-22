@@ -1,0 +1,12 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const {Search}=require('../docs/search.js');
+const engine=new Search(JSON.parse(fs.readFileSync('docs/knowledge.json','utf8')));
+test('water and hose requirements cite silo guide page 4',()=>{const a=engine.answer('What water supply and hose does a mortar silo require?');assert.equal(a.sources[0].page,4);assert.match(a.sources[0].text,/1000/);});
+test('power requirements and conversational followup',()=>{const a=engine.answer('What about power?','silo water requirements');assert.equal(a.sources[0].page,4);assert.match(a.sources[0].text,/Electrical Requirements/);});
+test('unknown terms and greetings are handled',()=>{assert.equal(engine.answer('xyzzyplugh').sources.length,0);assert.equal(engine.answer('thanks').query,'thanks');});
+test('price needs confirmation',()=>assert.match(engine.answer('Current mortar prices').message,/need confirmation/));
+test('every answer source is Kilsaran',()=>{for(const q of ['mortart bags','paving flags','concrete','aggregates']){const a=engine.answer(q);assert.ok(a.sources.length);for(const s of a.sources)assert.ok(['kilsaran.ie','www.kilsaran.ie'].includes(new URL(s.url).hostname));}});
+test('static assets work under repository subpath with no API',()=>{const html=fs.readFileSync('docs/index.html','utf8');assert.ok(!/(?:href|src)="\//.test(html));const js=fs.readFileSync('docs/app.js','utf8');assert.ok(!js.includes('/api/'));assert.match(js,/knowledge.json/);});
+test('troubleshooting table preserves source-only handling',()=>{const a=engine.answer('Silo mortar mix too dry blocked water filters');assert.ok(a.sources.some(s=>s.table));});

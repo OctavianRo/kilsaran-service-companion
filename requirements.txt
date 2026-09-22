@@ -1,0 +1,5 @@
+beautifulsoup4==4.15.0
+pypdf==6.19.0
+requests==2.34.2
+fonttools==4.65.0
+cryptography==50.0.1
