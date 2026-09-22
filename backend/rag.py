@@ -9,6 +9,8 @@ class OpenAI:
     def post(self, path, payload):
         try:
             r=requests.post('https://api.openai.com/v1/'+path,headers={'Authorization':'Bearer '+self.key},json=payload,timeout=(10,70))
+            if r.status_code==429 and r.json().get('error',{}).get('type')=='insufficient_quota':
+                raise ProviderError('The AI service has no API credit remaining. Please ask the owner to add credit in OpenAI billing, then try again.')
             r.raise_for_status()
             return r.json()
         except (requests.RequestException,ValueError) as e:

@@ -1,6 +1,6 @@
 # Build Service Companion
 
-**RAG upgrade:** OpenAI managed vector retrieval and a citation-checked answer backend are prepared. See [RAG_SETUP.md](RAG_SETUP.md) to activate it. The public website is AI-only and shows a setup message until the backend is configured; AI mode sends questions and recent conversation to the backend and OpenAI.
+**Live deployment:** [Build](https://octavianro.github.io/kilsaran-service-companion/) uses the hosted OpenAI RAG backend at `https://kilsaran-rag.onrender.com`. The Render service is named `build` and uses free hosting. API credit and the private assistant access code are required. See [RAG_SETUP.md](RAG_SETUP.md) for maintenance instructions.
 
 A local customer-service reference chatbot using **only kilsaran.ie** pages and linked PDFs. It retrieves original passages with source links and PDF page numbers. No AI account or API key is required. It is an independent internal reference, not an official Kilsaran application.
 

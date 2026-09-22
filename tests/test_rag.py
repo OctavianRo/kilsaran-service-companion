@@ -44,3 +44,13 @@ class ServerTests(unittest.TestCase):
             self.assertEqual(self.post({'question':'Water?'}).status_code,200)
             self.assertEqual(self.post({'question':'Water?'}).status_code,200)
             self.assertEqual(self.post({'question':'Water?'}).status_code,429)
+
+class BillingErrorTests(unittest.TestCase):
+    def test_quota_error_is_actionable_and_does_not_expose_provider_response(self):
+        from backend.rag import OpenAI
+        from unittest.mock import Mock
+        response=Mock(status_code=429)
+        response.json.return_value={'error':{'type':'insufficient_quota','message':'sensitive provider details'}}
+        with patch('backend.rag.requests.post',return_value=response):
+            with self.assertRaisesRegex(ProviderError,'no API credit remaining'):
+                OpenAI('not-a-real-key').post('responses',{})

@@ -1,6 +1,6 @@
 # Activate the RAG assistant
 
-The RAG implementation is prepared, but **not activated**. The public GitHub Pages site remains in AI-only mode with a setup message until a backend is connected. Tests use simulated provider responses; no live generation or retrieval evaluation has run yet.
+The backend is deployed on Render as `build`, at `https://kilsaran-rag.onrender.com`, and the GitHub Pages site is configured to use it. OpenAI API credit and the private assistant access code are required. Local `.env`, the indexing manifest, and `Build-access.private.txt` are ignored by Git. Unit tests simulate provider responses; use the live evaluation script after indexing and funding the API account.
 
 ## Architecture
 
@@ -22,7 +22,7 @@ For updated data, archive the local manifest and build a replacement store. Swit
 
 ## 2. Host the backend
 
-`Dockerfile` works on a container host. `render.yaml` provides an optional Render Blueprint using a **paid 0.5 CPU / 512 MB instance**; review the provider's plan before provisioning. No paid hosting has been provisioned.
+`Dockerfile` works on a container host. `render.yaml` provides an optional Render Blueprint using a **free instance**, matching the deployed service. It can take about a minute to wake after inactivity. No paid hosting has been provisioned.
 
 Import `https://github.com/OctavianRo/kilsaran-service-companion` in the chosen host. Set these server environment variables using its secret settings:
 

@@ -6,3 +6,4 @@ data/cache/
 !.env.example
 data/vector-manifest.json
 data/rag-export/
+*.private.txt
