@@ -54,3 +54,10 @@ class BillingErrorTests(unittest.TestCase):
         with patch('backend.rag.requests.post',return_value=response):
             with self.assertRaisesRegex(ProviderError,'no API credit remaining'):
                 OpenAI('not-a-real-key').post('responses',{})
+
+class EquipmentFaultTests(unittest.TestCase):
+    def test_routine_cleaning_is_not_given_as_fault_evidence(self):
+        p=FakeProvider()
+        result=answer_question(p,'vs_test','model','The silo mixer is blocked',[])
+        self.assertEqual(result['status'],'not_found')
+        self.assertEqual(len(p.calls),1)
