@@ -36,3 +36,9 @@ library={'updated':data['updated'],'pages':sum(d['kind']=='page' for d in data['
 (OUT/'library.json').write_text(json.dumps(library,ensure_ascii=False,separators=(',',':')))
 (OUT/'.nojekyll').touch()
 print(f'Built {len(data["documents"])} sources into docs/')
+# Version assets together so returning users cannot load incompatible cached scripts.
+import hashlib
+for asset in ('style.css','rag-client.js','app.js'):
+ version=hashlib.sha256((OUT/asset).read_bytes()).hexdigest()[:12]
+ html=html.replace(f'./{asset}"',f'./{asset}?v={version}"')
+(OUT/'index.html').write_text(html)
