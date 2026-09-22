@@ -1,6 +1,6 @@
 # Activate the RAG assistant
 
-The RAG implementation is prepared, but **not activated**. The public GitHub Pages site remains in clearly labelled reference-search mode until a backend is connected. Tests use simulated provider responses; no live generation or retrieval evaluation has run yet.
+The RAG implementation is prepared, but **not activated**. The public GitHub Pages site remains in AI-only mode with a setup message until a backend is connected. Tests use simulated provider responses; no live generation or retrieval evaluation has run yet.
 
 ## Architecture
 

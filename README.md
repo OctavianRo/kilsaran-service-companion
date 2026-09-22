@@ -1,6 +1,6 @@
 # Kilsaran Service Companion
 
-**RAG upgrade:** OpenAI managed vector retrieval and a citation-checked answer backend are prepared. See [RAG_SETUP.md](RAG_SETUP.md) to activate it. The public website stays in labelled reference-search mode until the backend is configured; AI mode sends questions and recent conversation to the backend and OpenAI.
+**RAG upgrade:** OpenAI managed vector retrieval and a citation-checked answer backend are prepared. See [RAG_SETUP.md](RAG_SETUP.md) to activate it. The public website is AI-only and shows a setup message until the backend is configured; AI mode sends questions and recent conversation to the backend and OpenAI.
 
 A local customer-service reference chatbot using **only kilsaran.ie** pages and linked PDFs. It retrieves original passages with source links and PDF page numbers. No AI account or API key is required. It is an independent internal reference, not an official Kilsaran application.
 
@@ -38,7 +38,7 @@ Coverage is all pages exposed in the product, category and general page sitemaps
 
 ## GitHub Pages (access from work)
 
-The browser-only edition lives in `docs/`. It searches the same saved source library entirely in the browser, without a Python server or API keys. Questions and conversation text are not sent to a chatbot server, stored, or shared. GitHub serves the static files, and opening a source link visits Kilsaran's site. The site and its public-source library are publicly accessible.
+The AI-only website lives in `docs/`. GitHub serves its interface; answers require the configured RAG backend. Questions and recent conversation are sent to the backend and OpenAI. No browser extract matcher or full corpus is shipped to the website. Without a connection, it shows a setup message. See RAG_SETUP.md for activation. The older local reference tool is separate from the public site.
 
 After updating the source library, rebuild and test before publishing:
 
@@ -48,4 +48,4 @@ python3 scripts/build_pages.py
 node --test tests/search.test.cjs
 ```
 
-Commit and push the updated `docs/` folder. GitHub Pages publishes from `main` → `/docs`. Search in the browser uses BM25-style ranking with the same topic and equipment-guide boosts as the local edition. No automatic refresh schedule is configured.
+Commit and push the updated `docs/` folder. GitHub Pages publishes from `main` → `/docs`. Website questions use the managed vector retrieval and LLM backend exclusively. No automatic refresh schedule is configured.
