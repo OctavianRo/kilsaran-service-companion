@@ -1,5 +1,7 @@
 # Kilsaran Service Companion
 
+**RAG upgrade:** OpenAI managed vector retrieval and a citation-checked answer backend are prepared. See [RAG_SETUP.md](RAG_SETUP.md) to activate it. The public website stays in labelled reference-search mode until the backend is configured; AI mode sends questions and recent conversation to the backend and OpenAI.
+
 A local customer-service reference chatbot using **only kilsaran.ie** pages and linked PDFs. It retrieves original passages with source links and PDF page numbers. No AI account or API key is required. It is an independent internal reference, not an official Kilsaran application.
 
 ## Run

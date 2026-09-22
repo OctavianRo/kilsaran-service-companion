@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: kilsaran-rag
+    runtime: docker
+    plan: 0.5c-512mb
+    healthCheckPath: /health
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_VECTOR_STORE_ID
+        sync: false
+      - key: RAG_ACCESS_CODE
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4.1-mini
+      - key: ALLOWED_ORIGIN
+        value: https://octavianro.github.io
+      - key: DAILY_REQUEST_LIMIT
+        value: '200'
