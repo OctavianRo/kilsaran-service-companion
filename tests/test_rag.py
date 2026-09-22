@@ -7,7 +7,7 @@ class FakeProvider:
         self.calls=[];self.ids=ids or ['S1'];self.hits=hits;self.url=url
     def post(self,path,payload):
         self.calls.append((path,payload))
-        if 'search' in path:return {'data':[{'attributes':{'title':'Silo guide','url':self.url,'page':4,'kind':'pdf'},'content':[{'type':'text','text':'A clean 1000 litre water tank.'}]}] if self.hits else []}
+        if 'search' in path:return {'data':[{'attributes':{'title':'Silo guide','url':self.url,'page':4.0,'kind':'pdf'},'content':[{'type':'text','text':'A clean 1000 litre water tank.'}]}] if self.hits else []}
         return {'status':'completed','output':[{'type':'message','content':[{'type':'output_text','text':json.dumps({'status':'answered','answer':'','claims':[{'text':'The guide calls for a clean 1000 litre tank.','source_ids':self.ids}],'follow_up':''})}]}]}
 class RagTests(unittest.TestCase):
     def test_retrieve_then_generate(self):

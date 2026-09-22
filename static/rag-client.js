@@ -1,6 +1,6 @@
 /* The model key lives on the backend. This client holds only a separate access code in memory. */
 let ragURL='',ragCode='',ragHistory=[];
-const configReady=fetch('./config.json').then(r=>r.ok?r.json():{}).then(c=>{ragURL=c.ragApiUrl||localStorage.getItem('ragApiUrl')||'';}).catch(()=>{});
+const configReady=fetch('./config.json',{cache:'no-store'}).then(r=>r.ok?r.json():{}).then(c=>{ragURL=c.ragApiUrl||localStorage.getItem('ragApiUrl')||'';}).catch(()=>{});
 function createRagEngine(library){
   const setting=document.createElement('button');setting.type='button';setting.className='copy';setting.textContent='Assistant connection';document.querySelector('.focus-line').append(setting);
   const dialog=document.createElement('dialog');dialog.className='rag-settings';

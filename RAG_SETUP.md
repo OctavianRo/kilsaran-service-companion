@@ -1,6 +1,6 @@
 # Activate the RAG assistant
 
-The backend is deployed on Render as `build`, at `https://kilsaran-rag.onrender.com`, and the GitHub Pages site is configured to use it. OpenAI API credit and the private assistant access code are required. Local `.env`, the indexing manifest, and `Build-access.private.txt` are ignored by Git. Unit tests simulate provider responses; use the live evaluation script after indexing and funding the API account.
+The backend is deployed on Render as `build`, at `https://kilsaran-rag.onrender.com`, and the GitHub Pages site is configured to use it. OpenAI API credit and the private assistant access code are required. Local `.env`, the indexing manifest, and `Build-access.private.txt` are ignored by Git. Unit tests simulate provider responses; all 480 source files were indexed and live answers were verified on 22 September 2026. The live checks covered silo water and hose guidance, ambiguous pallet questions, unpublished prices/delivery, and a nonexistent product. Rerun the evaluation after meaningful corpus or model changes.
 
 ## Architecture
 
