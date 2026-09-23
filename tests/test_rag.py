@@ -10,6 +10,10 @@ class FakeProvider:
         if 'search' in path:return {'data':[{'attributes':{'title':'Silo guide','url':self.url,'page':4.0,'kind':'pdf'},'content':[{'type':'text','text':'A clean 1000 litre water tank.'}]}] if self.hits else []}
         return {'status':'completed','output':[{'type':'message','content':[{'type':'output_text','text':json.dumps({'status':'answered','answer':'','claims':[{'text':'The guide calls for a clean 1000 litre tank.','source_ids':self.ids}],'follow_up':''})}]}]}
 class RagTests(unittest.TestCase):
+    def test_official_document_service_citation(self):
+        url='https://g13660.ideagenqpulse.com/QPulseDocumentService/Documents.svc/documents/active/attachment?number=DOC80'
+        result=answer_question(FakeProvider(url=url),'vs_test','model','Water?',[])
+        self.assertEqual(result['sources'][0]['url'],url+'#page=4')
     def test_retrieve_then_generate(self):
         p=FakeProvider();a=answer_question(p,'vs_test','test-model','Water?',[])
         self.assertEqual(p.calls[0][0],'vector_stores/vs_test/search');self.assertEqual(p.calls[1][0],'responses')
@@ -56,6 +60,11 @@ class BillingErrorTests(unittest.TestCase):
                 OpenAI('not-a-real-key').post('responses',{})
 
 class EquipmentFaultTests(unittest.TestCase):
+    def test_repair_product_is_not_an_equipment_fault(self):
+        p=FakeProvider()
+        result=answer_question(p,'vs_test','model','What is KPRO Repair CRM-201 used for?',[])
+        self.assertEqual(result['status'],'answered')
+        self.assertFalse(json.loads(p.calls[1][1]['input'])['active_equipment_fault'])
     def test_routine_cleaning_is_not_given_as_fault_evidence(self):
         p=FakeProvider()
         result=answer_question(p,'vs_test','model','The silo mixer is blocked',[])

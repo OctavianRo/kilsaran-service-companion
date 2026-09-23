@@ -1,7 +1,9 @@
 """Build the self-contained GitHub Pages site without credentials or local files."""
-import json
+import json,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT))
+from backend.sources import trusted_source
 OUT=ROOT/'docs';OUT.mkdir(exist_ok=True)
 html=(ROOT/'static/index.html').read_text().replace('href="/"','href="./"').replace('href="/style.css"','href="./style.css"').replace('src="/app.js"','src="./app.js"').replace('<script src="./app.js">','<script src="./rag-client.js"></script><script src="./app.js">').replace('Local workspace','Browser workspace').replace('Independent internal reference tool','Independent reference · Not affiliated with Kilsaran')
 (OUT/'index.html').write_text(html)
@@ -30,7 +32,7 @@ if not (OUT/'config.json').exists():(OUT/'config.json').write_text(json.dumps({'
 data=json.loads((ROOT/'data/knowledge.json').read_text())
 # Publish only known public-source fields. Never include filesystem paths or secrets.
 for d in data['documents']:
- assert d['url'].startswith(('https://www.kilsaran.ie/','https://kilsaran.ie/'))
+ assert trusted_source(d['url'])
 data['errors']=[{'url':e['url'],'error':'Source unavailable or PDF has no readable text. See original source.'} for e in data['errors']]
 library={'updated':data['updated'],'pages':sum(d['kind']=='page' for d in data['documents']),'pdfs':sum(d['kind']=='pdf' for d in data['documents']),'failures':len(data['errors']),'errors':data['errors']}
 (OUT/'library.json').write_text(json.dumps(library,ensure_ascii=False,separators=(',',':')))

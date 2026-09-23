@@ -1,6 +1,6 @@
 # Activate the RAG assistant
 
-The backend is deployed on Render as `build`, at `https://kilsaran-rag.onrender.com`, and the GitHub Pages site is configured to use it. OpenAI API credit and the private assistant access code are required. Local `.env`, the indexing manifest, and `Build-access.private.txt` are ignored by Git. Unit tests simulate provider responses; all 480 source files were indexed and live answers were verified on 22 September 2026. The live checks covered silo water and hose guidance, ambiguous pallet questions, unpublished prices/delivery, and a nonexistent product. Rerun the evaluation after meaningful corpus or model changes.
+The backend is deployed on Render as `build`, at `https://kilsaran-rag.onrender.com`, and the GitHub Pages site is configured to use it. OpenAI API credit and the private assistant access code are required. Local `.env`, the indexing manifest, and `Build-access.private.txt` are ignored by Git. Unit tests simulate provider responses; the initial 480 source files were indexed and live answers were verified on 22 September 2026. A larger technical-library replacement is prepared separately; see `data/document-audit.md` for its coverage. The live checks covered silo water and hose guidance, ambiguous pallet questions, unpublished prices/delivery, and a nonexistent product. Rerun the evaluation after meaningful corpus or model changes.
 
 ## Architecture
 
@@ -16,7 +16,7 @@ Use an OpenAI API project with billing enabled. Supply `OPENAI_API_KEY` privatel
 .venv/bin/python scripts/index_vectors.py --upload
 ```
 
-The importer prepares 480 files from the current corpus, preserving PDF page references. It saves resumable indexing progress to the ignored `data/vector-manifest.json` and prints `OPENAI_VECTOR_STORE_ID` only when all files are indexed. It uploads only the public Kilsaran corpus. Known scrambled troubleshooting tables are replaced with a direction to the original source. The existing corpus is not exhaustive and contains older sources.
+The importer prepares one file per nonempty source page, preserving PDF page references. It saves resumable indexing progress to the ignored `data/vector-manifest.json` and prints `OPENAI_VECTOR_STORE_ID` only when all files are indexed. It uploads only the public Kilsaran corpus. Known scrambled troubleshooting tables are replaced with a direction to the original source. The existing corpus is not exhaustive and contains older sources.
 
 For updated data, archive the local manifest and build a replacement store. Switch the backend only after the new store reports ready. Old stores/uploads are not automatically deleted; remove them after verification to avoid retaining unused resources. An interrupted upload before its ID is saved may leave an orphan file in the OpenAI project.
 
@@ -62,3 +62,9 @@ node --test tests/search.test.cjs
 ```
 
 Official references: [OpenAI Retrieval](https://developers.openai.com/api/docs/guides/retrieval), [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs).
+
+## Expanded technical-library index
+
+The 23 September audit discovers 826 unique document links across Kilsaran pages and its linked document-service tenant. 777 PDFs were read, including 139 of 140 unique TDS links; 224 pages used local OCR. 49 downloads are unavailable at the source, including CT 87 TDS (DOC185). See the machine-readable `data/document-audit.json` and the readable report. The corpus includes 325 HTML pages.
+
+Use `scripts/refresh_vectors.py` to build a separate replacement store. It saves progress in `data/cache/replacement-vector-manifest.json`, verifies the completion count, and never switches production automatically. Keep the original store and manifest for rollback. Update the live store setting only after evaluation.

@@ -16,7 +16,10 @@ def export():
                 text='This page is a troubleshooting table. Refer the user to the original PDF page and Kilsaran support; extracted column relationships are not reliable.'
             identity=doc['url']+'#'+str(page)
             filename=hashlib.sha256(identity.encode()).hexdigest()[:24]+'.txt'
-            content=f"Title: {doc['title']}\nSource: {doc['url']}\nPDF page: {page or 'n/a'}\nIndexed: {data['updated']}\n\n{text}"
+            labels=sorted(set(r['label'] for r in doc.get('references',[])))
+            context='\nLibrary associations: '+'; '.join(labels)[:4000] if labels else ''
+            caution='\nExtraction: OCR of a scanned page; verify unclear numbers and table relationships in the original PDF.' if section.get('extraction')=='ocr' else ''
+            content=f"Title: {doc['title']}\nSource: {doc['url']}\nPDF page: {page or 'n/a'}\nIndexed: {data['updated']}{context}{caution}\n\n{text}"
             attrs={'url':doc['url'],'title':doc['title'][:250],'page':page,'kind':doc['kind']}
             if len(attrs['url'])>512:raise ValueError('Source URL exceeds metadata limit')
             items.append({'filename':filename,'content':content,'attributes':attrs})
